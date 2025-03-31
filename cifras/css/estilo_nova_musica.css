@@ -3,7 +3,6 @@ body {
     background-color: #333;
     color: white;
     text-align: center;
-    margin: 0px;
 }
 input {
     background-color: #474747; /* Define o fundo cinza */
@@ -125,12 +124,4 @@ th:nth-child(3), td:nth-child(3) { /* Terceira coluna (Acordes) maior */
     display: flex; /* Garante que os itens fiquem em linha */
     flex-wrap: nowrap; /* Impede a quebra de linha */
 
-} 
-@media (max-width: 800px) {
-    table {
-        width: 100%;
-        margin: 5px 0px;
-
-
-    }
-} 
+}
