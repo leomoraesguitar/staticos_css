@@ -2,7 +2,7 @@
 
 async function requisitarDados() {
     const chaveLocalStorage = "listas";
-    const urlEndpoint = "{% url 'obterdados' %}"; // Certifique-se de usar a URL correta
+    // const urlEndpoint = "{% url 'obterdados' %}"; // Certifique-se de usar a URL correta
 
     // Verifica se os dados já estão no Local Storage
     const dadosExistentes = localStorage.getItem(chaveLocalStorage);
@@ -16,6 +16,8 @@ async function requisitarDados() {
         try {
             // Faz a requisição ao endpoint de dados
             const resposta = await fetch(urlEndpoint);
+            console.log("Resposta do servidor:", resposta);
+
             if (!resposta.ok) {
                 throw new Error(`Erro na requisição: ${resposta.statusText}`);
             }
