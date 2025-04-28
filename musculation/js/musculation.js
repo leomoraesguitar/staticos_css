@@ -1,45 +1,76 @@
-document.getElementById("limparProgresso").addEventListener("click", () => {
-    // Removendo dados do localStorage
-    localStorage.removeItem("progressoPorGrupo");
-    localStorage.removeItem("repeticoesMarcadasPorGrupo");
 
-    // Resetando variáveis na memória
-    progressoPorGrupo = {};
-    repeticoesMarcadasPorGrupo = {};
-    grupos.forEach(grupo => {
-        progressoPorGrupo[grupo] = 0;
-        repeticoesMarcadasPorGrupo[grupo] = {};
-    });
 
-    // Resetando barra de progresso
-    barraProgressoEl.style.width = "0%";
-    barraProgressoEl.setAttribute("aria-valuenow", 0);
-    repeticoesConcluidasEl.textContent = 0;
+async function requisitarDados() {
+    const chaveLocalStorage = "listas";
+    const urlEndpoint = "{% url 'obterdados' %}"; // Certifique-se de usar a URL correta
 
-    // Resetando todas as repetições marcadas
-    document.querySelectorAll(".repeticao-btn").forEach(button => {
-        button.classList.remove("btn-primary");
-    });
+    // Verifica se os dados já estão no Local Storage
+    const dadosExistentes = localStorage.getItem(chaveLocalStorage);
 
-    // Atualizando a interface para refletir os valores zerados
-    atualizarItens(); 
-    salvarProgresso(); // Salva os valores zerados para evitar carregamento incorreto
+    if (dadosExistentes) {
+        console.log("Os dados já estão no Local Storage:", JSON.parse(dadosExistentes));
+        return JSON.parse(dadosExistentes); // Retorna os dados armazenados
+    } else {
+        console.log("Dados não encontrados no Local Storage. Requisitando...");
 
-    console.log("✅ Progresso e repetições apagadas com sucesso!");
+        try {
+            // Faz a requisição ao endpoint de dados
+            const resposta = await fetch(urlEndpoint);
+            if (!resposta.ok) {
+                throw new Error(`Erro na requisição: ${resposta.statusText}`);
+            }
+
+            const dados = await resposta.json(); // Obtém os dados como JSON
+            console.log("Dados recebidos:", dados);
+
+            // Armazena os dados no Local Storage
+            localStorage.setItem(chaveLocalStorage, JSON.stringify(dados));
+            console.log("Dados armazenados no Local Storage com sucesso!");
+
+            return dados; // Retorna os dados requisitados
+        } catch (erro) {
+            console.error("Erro ao requisitar os dados:", erro);
+            return null;
+        }
+    }
+}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  requisitarDados();
 });
 
 
 
-document.addEventListener("DOMContentLoaded", () => {
-    let listasData = document.getElementById("listas-data");
+document.addEventListener("DOMContentLoaded", async () => {
+    // Obtenção de dados do Local Storage ou servidor
+    let listasData = localStorage.getItem("listas");
 
     if (!listasData) {
-        console.error("Erro: JSON não encontrado.");
-        return;
+        console.log("Dados não encontrados no Local Storage. Requisitando do servidor...");
+        try {
+            const resposta = await fetch(urlEndpoint);
+            console.log("Resposta do servidor:", resposta);
+            if (!resposta.ok) {
+                throw new Error(`Erro ao requisitar os dados: ${resposta.statusText}`);
+            }
+            listasData = await resposta.json();
+            console.log("JSON recebido do servidor:", listasData);
+            localStorage.setItem("listas", JSON.stringify(listasData));
+        } catch (error) {
+            console.error("Erro ao requisitar os dados:", error);
+            return;
+        }
+    } else {
+        console.log("Carregando dados do Local Storage...");
+        listasData = JSON.parse(listasData);
     }
 
-    let listas = JSON.parse(listasData.textContent);
-    let grupos = Object.keys(listas);
+    // Restante do código
+    let grupos = Object.keys(listasData);
+    let listas = listasData;
+
+    // console.log("Grupos carregados:", grupos);
     let grupoSelect = document.getElementById("grupoSelect");
     let grupoIndex = 0;
     let exercicioIndex = 0;
@@ -187,4 +218,66 @@ document.addEventListener("DOMContentLoaded", () => {
     carregarProgresso(); // 🚀 Restaurando progresso salvo
     preencherSelect(); // 🚀 Agora os grupos aparecem no select
     atualizarItens(); // Inicializando corretamente
+
+
+    document.getElementById("limparProgresso").addEventListener("click", () => {
+    // Removendo dados do localStorage
+    localStorage.removeItem("progressoPorGrupo");
+    localStorage.removeItem("repeticoesMarcadasPorGrupo");
+
+    // Resetando variáveis na memória
+    progressoPorGrupo = {};
+    repeticoesMarcadasPorGrupo = {};
+    grupos.forEach(grupo => {
+        progressoPorGrupo[grupo] = 0;
+        repeticoesMarcadasPorGrupo[grupo] = {};
+    });
+
+    // Resetando barra de progresso
+    barraProgressoEl.style.width = "0%";
+    barraProgressoEl.setAttribute("aria-valuenow", 0);
+    repeticoesConcluidasEl.textContent = 0;
+
+    // Resetando todas as repetições marcadas
+    document.querySelectorAll(".repeticao-btn").forEach(button => {
+        button.classList.remove("btn-primary");
+    });
+
+    // Atualizando a interface para refletir os valores zerados
+    atualizarItens(); 
+    salvarProgresso(); // Salva os valores zerados para evitar carregamento incorreto
+
+    alert("✅ Progresso e repetições apagadas com sucesso!");
 });
+
+
+
+});
+
+
+
+  // Obtém a data atual          const today = new Date();
+document.addEventListener("DOMContentLoaded", () => {
+    // Declaração da variável today
+    const today = new Date();
+
+    // Formata a data para o formato pt-BR
+    const formattedDate = today.toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+    });
+
+    // Atualiza o conteúdo do elemento com ID 'currentDate'
+    document.getElementById('currentDate').textContent = formattedDate;
+});
+
+  // function salvarUrlNoInput() {
+  //     // Recupera a URL armazenada no sessionStorage ou define 1 como padrão
+  //     const url = sessionStorage.getItem('url') || '1';
+
+  //     // Define o valor do input como a URL recuperada ou como 1
+  //     const input = document.getElementById('url_input');
+  //     input.value = url;
+  //   }
+  
