@@ -23,7 +23,7 @@ async function requisitarDados() {
             }
 
             const dados = await resposta.json(); // Obtém os dados como JSON
-            console.log("Dados recebidos:", dados);
+            // console.log("Dados recebidos:", dados);
 
             // Armazena os dados no Local Storage
             localStorage.setItem(chaveLocalStorage, JSON.stringify(dados));
