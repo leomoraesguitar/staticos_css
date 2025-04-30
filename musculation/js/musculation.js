@@ -205,33 +205,52 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 
-
         pesoInicialInput.addEventListener("change", (event) => {
-            const novoPesoInicial = parseFloat(event.target.value) || 0;
+            const novoPesoInicial = parseFloat(event.target.value);
+            if (isNaN(novoPesoInicial) || novoPesoInicial < 0) {
+                alert("Por favor, insira um peso inicial válido (número positivo).");
+                event.target.value = exercicioAtual[1]; // Restaura o valor anterior
+                return;
+            }
+            // Formata com duas casas decimais
+            const pesoFormatado = parseFloat(novoPesoInicial.toFixed(1));
             // Atualiza o valor no listas
-            listas[grupoAtual][exercicioIndex][1] = novoPesoInicial;
+            listas[grupoAtual][exercicioIndex][1] = pesoFormatado;
             // Atualiza o localStorage
             localStorage.setItem("listas", JSON.stringify(listas));
             // Envia a requisição para o Django
             const repeticoesMarcadas = repeticoesMarcadasPorGrupo[grupoAtual]?.[exercicioAtual[0]] || [];
-            console.log(grupoAtual,
+            // console.log( grupoAtual,
+            //         exercicioAtual[0],
+            //         pesoFormatado,
+            //         parseFloat(pesoFinalInput.value) || 0,
+            //         repeticoesMarcadas)
+            enviarDadosParaDjango(
+                grupoAtual,
                 exercicioAtual[0],
-                novoPesoInicial,
+                pesoFormatado,
                 parseFloat(pesoFinalInput.value) || 0,
-                repeticoesMarcadas)
-            // enviarDadosParaDjango(
-            //     grupoAtual,
-            //     exercicioAtual[0],
-            //     novoPesoInicial,
-            //     parseFloat(pesoFinalInput.value) || 0,
-            //     repeticoesMarcadas
-            // );
+                repeticoesMarcadas
+            ).then(resultado => {
+                if (resultado && resultado.status === 'success') {
+                    alert("Peso inicial atualizado com sucesso!");
+                } else {
+                    alert("Erro ao atualizar o peso inicial. Tente novamente.");
+                }
+            });
         });
     
         pesoFinalInput.addEventListener("change", (event) => {
-            const novoPesoFinal = parseFloat(event.target.value) || 0;
+            const novoPesoFinal = parseFloat(event.target.value);
+            if (isNaN(novoPesoFinal) || novoPesoFinal < 0) {
+                alert("Por favor, insira um peso final válido (número positivo).");
+                event.target.value = exercicioAtual[2]; // Restaura o valor anterior
+                return;
+            }
+            // Formata com duas casas decimais
+            const pesoFormatado = parseFloat(novoPesoFinal.toFixed(1));
             // Atualiza o valor no listas
-            listas[grupoAtual][exercicioIndex][2] = novoPesoFinal;
+            listas[grupoAtual][exercicioIndex][2] = pesoFormatado;
             // Atualiza o localStorage
             localStorage.setItem("listas", JSON.stringify(listas));
             // Envia a requisição para o Django
@@ -240,9 +259,15 @@ document.addEventListener("DOMContentLoaded", async () => {
                 grupoAtual,
                 exercicioAtual[0],
                 parseFloat(pesoInicialInput.value) || 0,
-                novoPesoFinal,
+                pesoFormatado,
                 repeticoesMarcadas
-            );
+            ).then(resultado => {
+                if (resultado && resultado.status === 'success') {
+                    alert("Peso final atualizado com sucesso!");
+                } else {
+                    alert("Erro ao atualizar o peso final. Tente novamente.");
+                }
+            });
         });
     
 
