@@ -136,7 +136,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     async function enviarFormulario(grupo, exercicio, pesoInicial, pesoFinal, repeticoes) {
         const formulario = document.querySelector('form[method="POST"]');
         // const updateEndpoint = "{% url 'atualizar_pesos' %}"; // Substitua pela URL correta
-
+        if (!updateEndpoint) {
+            console.error("updateEndpoint não está definido. Verifique o <script> no HTML.");
+            return { status: 'error', message: 'Endpoint não configurado' };
+        }
         // Cria um FormData com os dados
         const formData = new FormData(formulario);
         formData.append('grupo', grupo);
@@ -217,7 +220,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 exercicioAtual[0],
                 novoPesoInicial,
                 parseInt(pesoFinalInput.value) || 0,
-                repeticoesMarcadas
+                exercicioAtual.slice(3) // Envia todas as repetições do exercício
             ).then(resultado => {
                 if (resultado && resultado.status === 'success') {
                     alert("Peso inicial atualizado com sucesso!");
@@ -245,7 +248,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 exercicioAtual[0],
                 parseInt(pesoInicialInput.value) || 0,
                 novoPesoFinal,
-                repeticoesMarcadas
+                exercicioAtual.slice(3) // Envia todas as repetições do exercício
             ).then(resultado => {
                 if (resultado && resultado.status === 'success') {
                     alert("Peso final atualizado com sucesso!");
