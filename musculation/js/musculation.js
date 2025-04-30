@@ -325,8 +325,25 @@ document.addEventListener("DOMContentLoaded", async () => {
         atualizarItens();
     });
 
+
+    // Define o grupo com base no dia da semana
+    function definirGrupoPorDia() {
+        // Obtém o dia da semana (0 = domingo, 1 = segunda, ..., 6 = sábado)
+        const diaSemana = today.getDay();
+        // Mapeia o dia da semana para o índice do array grupos
+        // Assumindo grupos = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"]
+        grupoIndex = (diaSemana - 1) % grupos.length; // Segunda = 0, Terça = 1, ..., Domingo = 6
+        if (grupoIndex < 0) grupoIndex = grupos.length - 1; // Domingo (0) = último grupo (Domingo)
+
+        // Define o valor do grupoSelect
+        grupoSelect.value = grupoIndex;
+        console.log(`Grupo selecionado para o dia ${diaSemana}: ${grupos[grupoIndex]}`);
+    }
+
+
     carregarProgresso(); // 🚀 Restaurando progresso salvo
     preencherSelect(); // 🚀 Agora os grupos aparecem no select
+    definirGrupoPorDia(); // Define o grupo com base no dia
     atualizarItens(); // Inicializando corretamente
 
 
