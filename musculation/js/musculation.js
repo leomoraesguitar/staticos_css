@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Função para enviar o formulário ao Django
     async function enviarFormulario(grupo, exercicio, pesoInicial, pesoFinal, repeticoes) {
         const formulario = document.querySelector('form[method="POST"]');
-        const updateEndpoint = "{% url 'atualizar_pesos' %}"; // Substitua pela URL correta
+        // const updateEndpoint = "{% url 'atualizar_pesos' %}"; // Substitua pela URL correta
 
         // Cria um FormData com os dados
         const formData = new FormData(formulario);
