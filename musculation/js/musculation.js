@@ -132,27 +132,23 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
 
-    // Função para enviar dados ao Django
-    async function enviarDadosParaDjango(grupo, exercicio, pesoInicial, pesoFinal, repeticoes) {
-        const updateEndpoint = "{% url 'atualizar_pesos' %}"; // Substitua pela URL correta do Django
-        const csrfToken = getCookie('csrftoken'); // Obtém o token CSRF
+    // Função para enviar o formulário ao Django
+    async function enviarFormulario(grupo, exercicio, pesoInicial, pesoFinal, repeticoes) {
+        const formulario = document.querySelector('form[method="POST"]');
+        const updateEndpoint = "{% url 'atualizar_pesos' %}"; // Substitua pela URL correta
 
-        const dados = {
-            grupo: grupo,
-            exercicio: exercicio,
-            pesoInicial: pesoInicial,
-            pesoFinal: pesoFinal,
-            repeticoes: repeticoes
-        };
+        // Cria um FormData com os dados
+        const formData = new FormData(formulario);
+        formData.append('grupo', grupo);
+        formData.append('exercicio', exercicio);
+        formData.append('pesoInicial', pesoInicial);
+        formData.append('pesoFinal', pesoFinal);
+        formData.append('repeticoes', JSON.stringify(repeticoes)); // Envia como string JSON
 
         try {
             const resposta = await fetch(updateEndpoint, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrfToken // Inclui o token CSRF
-                },
-                body: JSON.stringify(dados)
+                body: formData
             });
 
             if (!resposta.ok) {
@@ -164,9 +160,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             return resultado;
         } catch (erro) {
             console.error("Erro ao enviar dados para o Django:", erro);
+            return { status: 'error', message: erro.message };
         }
     }
-
 
     function atualizarItens() {
         let grupoAtual = grupos[grupoIndex];
@@ -203,33 +199,24 @@ document.addEventListener("DOMContentLoaded", async () => {
         atualizarBarraProgresso();
 
 
-
-
         pesoInicialInput.addEventListener("change", (event) => {
-            const novoPesoInicial = parseFloat(event.target.value);
+            const novoPesoInicial = parseInt(event.target.value);
             if (isNaN(novoPesoInicial) || novoPesoInicial < 0) {
-                alert("Por favor, insira um peso inicial válido (número positivo).");
+                alert("Por favor, insira um peso inicial válido (número inteiro positivo).");
                 event.target.value = exercicioAtual[1]; // Restaura o valor anterior
                 return;
             }
-            // Formata com duas casas decimais
-            const pesoFormatado = parseFloat(novoPesoInicial.toFixed(1));
             // Atualiza o valor no listas
-            listas[grupoAtual][exercicioIndex][1] = pesoFormatado;
+            listas[grupoAtual][exercicioIndex][1] = novoPesoInicial;
             // Atualiza o localStorage
             localStorage.setItem("listas", JSON.stringify(listas));
-            // Envia a requisição para o Django
+            // Envia o formulário para o Django
             const repeticoesMarcadas = repeticoesMarcadasPorGrupo[grupoAtual]?.[exercicioAtual[0]] || [];
-            // console.log( grupoAtual,
-            //         exercicioAtual[0],
-            //         pesoFormatado,
-            //         parseFloat(pesoFinalInput.value) || 0,
-            //         repeticoesMarcadas)
-            enviarDadosParaDjango(
+            enviarFormulario(
                 grupoAtual,
                 exercicioAtual[0],
-                pesoFormatado,
-                parseFloat(pesoFinalInput.value) || 0,
+                novoPesoInicial,
+                parseInt(pesoFinalInput.value) || 0,
                 repeticoesMarcadas
             ).then(resultado => {
                 if (resultado && resultado.status === 'success') {
@@ -239,27 +226,25 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
             });
         });
-    
+
         pesoFinalInput.addEventListener("change", (event) => {
-            const novoPesoFinal = parseFloat(event.target.value);
+            const novoPesoFinal = parseInt(event.target.value);
             if (isNaN(novoPesoFinal) || novoPesoFinal < 0) {
-                alert("Por favor, insira um peso final válido (número positivo).");
+                alert("Por favor, insira um peso final válido (número inteiro positivo).");
                 event.target.value = exercicioAtual[2]; // Restaura o valor anterior
                 return;
             }
-            // Formata com duas casas decimais
-            const pesoFormatado = parseFloat(novoPesoFinal.toFixed(1));
             // Atualiza o valor no listas
-            listas[grupoAtual][exercicioIndex][2] = pesoFormatado;
+            listas[grupoAtual][exercicioIndex][2] = novoPesoFinal;
             // Atualiza o localStorage
             localStorage.setItem("listas", JSON.stringify(listas));
-            // Envia a requisição para o Django
+            // Envia o formulário para o Django
             const repeticoesMarcadas = repeticoesMarcadasPorGrupo[grupoAtual]?.[exercicioAtual[0]] || [];
-            enviarDadosParaDjango(
+            enviarFormulario(
                 grupoAtual,
                 exercicioAtual[0],
-                parseFloat(pesoInicialInput.value) || 0,
-                pesoFormatado,
+                parseInt(pesoInicialInput.value) || 0,
+                novoPesoFinal,
                 repeticoesMarcadas
             ).then(resultado => {
                 if (resultado && resultado.status === 'success') {
