@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     // Função para enviar o formulário ao Django
-    async function enviarFormulario(grupo, exercicio, pesoInicial, pesoFinal, repeticoes) {
+    async function enviarFormulario(grupo, exercicio, pesoInicial, pesoFinal) {
         const formulario = document.querySelector('form[method="POST"]');
         // const updateEndpoint = "{% url 'atualizar_pesos' %}"; // Substitua pela URL correta
         if (!updateEndpoint) {
@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         formData.append('exercicio', exercicio);
         formData.append('pesoInicial', pesoInicial);
         formData.append('pesoFinal', pesoFinal);
-        formData.append('repeticoes', JSON.stringify(repeticoes)); // Envia como string JSON
+
 
         try {
             const resposta = await fetch(updateEndpoint, {
@@ -214,13 +214,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             // Atualiza o localStorage
             localStorage.setItem("listas", JSON.stringify(listas));
             // Envia o formulário para o Django
-            const repeticoesMarcadas = repeticoesMarcadasPorGrupo[grupoAtual]?.[exercicioAtual[0]] || [];
+
             enviarFormulario(
                 grupoAtual,
                 exercicioAtual[0],
                 novoPesoInicial,
                 parseInt(pesoFinalInput.value) || 0,
-                exercicioAtual.slice(3) // Envia todas as repetições do exercício
             ).then(resultado => {
                 if (resultado && resultado.status === 'success') {
                     alert("Peso inicial atualizado com sucesso!");
@@ -242,13 +241,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             // Atualiza o localStorage
             localStorage.setItem("listas", JSON.stringify(listas));
             // Envia o formulário para o Django
-            const repeticoesMarcadas = repeticoesMarcadasPorGrupo[grupoAtual]?.[exercicioAtual[0]] || [];
+
             enviarFormulario(
                 grupoAtual,
                 exercicioAtual[0],
                 parseInt(pesoInicialInput.value) || 0,
                 novoPesoFinal,
-                exercicioAtual.slice(3) // Envia todas as repetições do exercício
+
             ).then(resultado => {
                 if (resultado && resultado.status === 'success') {
                     alert("Peso final atualizado com sucesso!");
