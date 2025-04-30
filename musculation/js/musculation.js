@@ -131,13 +131,54 @@ document.addEventListener("DOMContentLoaded", async () => {
         totalRepeticoesEl.textContent = totalRepeticoes;
     }
 
+
+    // Função para enviar dados ao Django
+    async function enviarDadosParaDjango(grupo, exercicio, pesoInicial, pesoFinal, repeticoes) {
+        const updateEndpoint = "{% url 'atualizar_pesos' %}"; // Substitua pela URL correta do Django
+        const csrfToken = getCookie('csrftoken'); // Obtém o token CSRF
+
+        const dados = {
+            grupo: grupo,
+            exercicio: exercicio,
+            pesoInicial: pesoInicial,
+            pesoFinal: pesoFinal,
+            repeticoes: repeticoes
+        };
+
+        try {
+            const resposta = await fetch(updateEndpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken // Inclui o token CSRF
+                },
+                body: JSON.stringify(dados)
+            });
+
+            if (!resposta.ok) {
+                throw new Error(`Erro na requisição: ${resposta.statusText}`);
+            }
+
+            const resultado = await resposta.json();
+            console.log("Dados enviados com sucesso:", resultado);
+            return resultado;
+        } catch (erro) {
+            console.error("Erro ao enviar dados para o Django:", erro);
+        }
+    }
+
+
     function atualizarItens() {
         let grupoAtual = grupos[grupoIndex];
         let exercicioAtual = listas[grupoAtual][exercicioIndex];
 
+        // Adiciona event listeners para pesoInicial e pesoFinal
+        const pesoInicialInput = document.getElementById("pesoInicial");
+        const pesoFinalInput = document.getElementById("pesoFinal");
+        
         document.getElementById("exercicio").textContent = exercicioAtual[0];
-        document.getElementById("pesoInicial").value = exercicioAtual[1];
-        document.getElementById("pesoFinal").value = exercicioAtual[2];
+        pesoInicialInput.value = exercicioAtual[1];
+        pesoFinalInput.value = exercicioAtual[2];
 
         calcularTotalRepeticoes();
 
@@ -152,8 +193,60 @@ document.addEventListener("DOMContentLoaded", async () => {
             repeticoesContainer.appendChild(button);
         });
 
+
+
+
+
+
+
         restaurarRepeticoesMarcadas(grupoAtual, exercicioAtual[0]);
         atualizarBarraProgresso();
+
+
+
+
+
+        pesoInicialInput.addEventListener("change", (event) => {
+            const novoPesoInicial = parseFloat(event.target.value) || 0;
+            // Atualiza o valor no listas
+            listas[grupoAtual][exercicioIndex][1] = novoPesoInicial;
+            // Atualiza o localStorage
+            localStorage.setItem("listas", JSON.stringify(listas));
+            // Envia a requisição para o Django
+            const repeticoesMarcadas = repeticoesMarcadasPorGrupo[grupoAtual]?.[exercicioAtual[0]] || [];
+            console.log(grupoAtual,
+                exercicioAtual[0],
+                novoPesoInicial,
+                parseFloat(pesoFinalInput.value) || 0,
+                repeticoesMarcadas)
+            // enviarDadosParaDjango(
+            //     grupoAtual,
+            //     exercicioAtual[0],
+            //     novoPesoInicial,
+            //     parseFloat(pesoFinalInput.value) || 0,
+            //     repeticoesMarcadas
+            // );
+        });
+    
+        pesoFinalInput.addEventListener("change", (event) => {
+            const novoPesoFinal = parseFloat(event.target.value) || 0;
+            // Atualiza o valor no listas
+            listas[grupoAtual][exercicioIndex][2] = novoPesoFinal;
+            // Atualiza o localStorage
+            localStorage.setItem("listas", JSON.stringify(listas));
+            // Envia a requisição para o Django
+            const repeticoesMarcadas = repeticoesMarcadasPorGrupo[grupoAtual]?.[exercicioAtual[0]] || [];
+            enviarDadosParaDjango(
+                grupoAtual,
+                exercicioAtual[0],
+                parseFloat(pesoInicialInput.value) || 0,
+                novoPesoFinal,
+                repeticoesMarcadas
+            );
+        });
+    
+
+
     }
 
     function atualizarBarraProgresso() {
@@ -196,6 +289,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         });
     }
+
+
+
 
     document.getElementById("next").addEventListener("click", () => {
         if (exercicioIndex < listas[grupos[grupoIndex]].length - 1) {
