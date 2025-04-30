@@ -223,34 +223,34 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     document.getElementById("limparProgresso").addEventListener("click", () => {
-    // Removendo dados do localStorage
-    localStorage.removeItem("progressoPorGrupo");
-    localStorage.removeItem("repeticoesMarcadasPorGrupo");
+        // Removendo dados do localStorage
+        localStorage.removeItem("progressoPorGrupo");
+        localStorage.removeItem("repeticoesMarcadasPorGrupo");
 
-    // Resetando variáveis na memória
-    progressoPorGrupo = {};
-    repeticoesMarcadasPorGrupo = {};
-    grupos.forEach(grupo => {
-        progressoPorGrupo[grupo] = 0;
-        repeticoesMarcadasPorGrupo[grupo] = {};
+        // Resetando variáveis na memória
+        progressoPorGrupo = {};
+        repeticoesMarcadasPorGrupo = {};
+        grupos.forEach(grupo => {
+            progressoPorGrupo[grupo] = 0;
+            repeticoesMarcadasPorGrupo[grupo] = {};
+        });
+
+        // Resetando barra de progresso
+        barraProgressoEl.style.width = "0%";
+        barraProgressoEl.setAttribute("aria-valuenow", 0);
+        repeticoesConcluidasEl.textContent = 0;
+
+        // Resetando todas as repetições marcadas
+        document.querySelectorAll(".repeticao-btn").forEach(button => {
+            button.classList.remove("btn-primary");
+        });
+
+        // Atualizando a interface para refletir os valores zerados
+        atualizarItens(); 
+        salvarProgresso(); // Salva os valores zerados para evitar carregamento incorreto
+
+        alert("✅ Progresso e repetições apagadas com sucesso!");
     });
-
-    // Resetando barra de progresso
-    barraProgressoEl.style.width = "0%";
-    barraProgressoEl.setAttribute("aria-valuenow", 0);
-    repeticoesConcluidasEl.textContent = 0;
-
-    // Resetando todas as repetições marcadas
-    document.querySelectorAll(".repeticao-btn").forEach(button => {
-        button.classList.remove("btn-primary");
-    });
-
-    // Atualizando a interface para refletir os valores zerados
-    atualizarItens(); 
-    salvarProgresso(); // Salva os valores zerados para evitar carregamento incorreto
-
-    alert("✅ Progresso e repetições apagadas com sucesso!");
-});
 
 
 
