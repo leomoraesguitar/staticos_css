@@ -233,13 +233,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                 exercicioAtual[0],
                 novoPesoInicial,
                 parseInt(pesoFinalInput.value) || 0,
-            ).then(resultado => {
-                if (resultado && resultado.status === 'success') {
-                    alert("Peso inicial atualizado com sucesso!");
-                } else {
-                    alert("Erro ao atualizar o peso inicial. Tente novamente.");
-                }
-            });
+            )
+            // .then(resultado => {
+            //     if (resultado && resultado.status === 'success') {
+            //         alert("Peso inicial atualizado com sucesso!");
+            //     } else {
+            //         alert("Erro ao atualizar o peso inicial. Tente novamente.");
+            //     }
+            // });
         });
 
         pesoFinalInput.addEventListener("change", (event) => {
@@ -261,13 +262,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                 parseInt(pesoInicialInput.value) || 0,
                 novoPesoFinal,
 
-            ).then(resultado => {
-                if (resultado && resultado.status === 'success') {
-                    alert("Peso final atualizado com sucesso!");
-                } else {
-                    alert("Erro ao atualizar o peso final. Tente novamente.");
-                }
-            });
+            )
+            // .then(resultado => {
+            //     if (resultado && resultado.status === 'success') {
+            //         alert("Peso final atualizado com sucesso!");
+            //     } else {
+            //         alert("Erro ao atualizar o peso final. Tente novamente.");
+            //     }
+            // });
         });
     
 
