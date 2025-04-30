@@ -193,7 +193,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         pesoInicialInput.textContent = exercicioAtual[1];
         pesoFinalInput.value = exercicioAtual[2];
         pesoFinalInput.textContent = exercicioAtual[2];
-
+        console.log(exercicioAtual[1], exercicioAtual[2])
         calcularTotalRepeticoes();
 
         let repeticoesContainer = document.getElementById("repeticoes");
