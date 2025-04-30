@@ -45,6 +45,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 document.addEventListener("DOMContentLoaded", async () => {
+    // Declaração da variável today
+    const today = new Date();
+
+    // Formata a data para o formato pt-BR
+    const formattedDate = today.toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+    });
+
+    // Atualiza o conteúdo do elemento com ID 'currentDate'
+    document.getElementById('currentDate').textContent = formattedDate;
+
     // Obtenção de dados do Local Storage ou servidor
     let listasData = localStorage.getItem("listas");
 
@@ -382,29 +395,3 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 
-
-  // Obtém a data atual          const today = new Date();
-document.addEventListener("DOMContentLoaded", () => {
-    // Declaração da variável today
-    const today = new Date();
-
-    // Formata a data para o formato pt-BR
-    const formattedDate = today.toLocaleDateString('pt-BR', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-    });
-
-    // Atualiza o conteúdo do elemento com ID 'currentDate'
-    document.getElementById('currentDate').textContent = formattedDate;
-});
-
-  // function salvarUrlNoInput() {
-  //     // Recupera a URL armazenada no sessionStorage ou define 1 como padrão
-  //     const url = sessionStorage.getItem('url') || '1';
-
-  //     // Define o valor do input como a URL recuperada ou como 1
-  //     const input = document.getElementById('url_input');
-  //     input.value = url;
-  //   }
-  
