@@ -99,9 +99,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     function preencherSelect() {
         grupoSelect.innerHTML = "";
-        grupos.forEach((grupo) => {
+        grupos.forEach((grupo, ) => {
             let option = document.createElement("option");
-            option.value = grupo;
+            option.value = i;
             option.textContent = grupo;
             grupoSelect.appendChild(option);
         });
@@ -341,16 +341,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     grupoSelect.addEventListener("change", (event) => {
         grupoIndex = parseInt(event.target.value);
-        const idday = {
-            'segunda-feira': 0,
-            'terça-terça': 1,
-            'quarta-quarta': 2,
-            'quinta-quinta': 3,
-            'sexta-sexta': 4,
-            'sábado': 5,
-            'domingo': 7,
-        };
-        grupoIndex = idday[event.target.value];
+        // const idday = {
+        //     'segunda-feira': 0,
+        //     'terça-terça': 1,
+        //     'quarta-quarta': 2,
+        //     'quinta-quinta': 3,
+        //     'sexta-sexta': 4,
+        //     'sábado': 5,
+        //     'domingo': 7,
+        // };
+        // grupoIndex = idday[event.target.value];
         console.log('grupoIndex',grupoIndex)
         exercicioIndex = 0;
         atualizarItens();
@@ -362,13 +362,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Mapeia nomes de dias do toLocaleDateString para o formato do modelo Treino2
 
         const dayMap = {
-            'segunda-feira': 'segunda',
-            'terça-feira': 'terça',
-            'quarta-feira': 'quarta',
-            'quinta-feira': 'quinta',
-            'sexta-feira': 'sexta',
-            'sábado': 'sábado',
-            'domingo': 'domingo',
+            'segunda-feira': 0,
+            'terça-feira': 1,
+            'quarta-feira': 2,
+            'quinta-feira': 2,
+            'sexta-feira': 4,
+            'sábado': 5,
+            'domingo': 6,
         };
 
         // Obtém o nome do dia da semana no formato do modelo Treino2
