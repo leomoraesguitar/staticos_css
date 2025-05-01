@@ -181,9 +181,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     function atualizarItens() {
-        console.log('grupoIndex', grupoIndex )
-        console.log('exercicioIndex', exercicioIndex )
-        console.log('grupos', grupos )
+        // console.log('grupoIndex', grupoIndex )
+        // console.log('exercicioIndex', exercicioIndex )
+        // console.log('grupos', grupos )
         let grupoAtual = grupos[grupoIndex];
         let exercicioAtual = listas[grupoAtual][exercicioIndex];
 
@@ -341,9 +341,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     grupoSelect.addEventListener("change", (event) => {
         grupoIndex = parseInt(event.target.value);
-        console.log('grupoIndex',grupoIndex)
+        console.log('event.target.value',event.target.value)
         exercicioIndex = 0;
-        atualizarItens();
+        // atualizarItens();
     });
 
 
@@ -373,7 +373,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     carregarProgresso(); // 🚀 Restaurando progresso salvo
     preencherSelect(); // 🚀 Agora os grupos aparecem no select
     definirGrupoPorDia(); // Define o grupo com base no dia
-    atualizarItens(); // Inicializando corretamente
+    // atualizarItens(); // Inicializando corretamente
 
 
     document.getElementById("limparProgresso").addEventListener("click", () => {
