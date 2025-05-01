@@ -341,17 +341,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     grupoSelect.addEventListener("change", (event) => {
         grupoIndex = parseInt(event.target.value);
-        // const idday = {
-        //     'segunda-feira': 0,
-        //     'terça-terça': 1,
-        //     'quarta-quarta': 2,
-        //     'quinta-quinta': 3,
-        //     'sexta-sexta': 4,
-        //     'sábado': 5,
-        //     'domingo': 7,
-        // };
-        // grupoIndex = idday[event.target.value];
-        console.log('grupoIndex',grupoIndex)
+
+        // console.log('grupoIndex',grupoIndex)
         exercicioIndex = 0;
         atualizarItens();
     });
@@ -373,7 +364,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Obtém o nome do dia da semana no formato do modelo Treino2
         const currentDayOfWeek = dayMap[today.toLocaleDateString('pt-BR', { weekday: 'long' })] || 'segunda';
-        console.log(`Dia da semana atual: ${currentDayOfWeek}`);
+        // console.log(`Dia da semana atual: ${currentDayOfWeek}`);
         // Define o valor do grupoSelect
         grupoSelect.value = currentDayOfWeek;
         // console.log(`Grupo selecionado para o dia ${diaSemana}: ${grupos[grupoIndex]}`);
