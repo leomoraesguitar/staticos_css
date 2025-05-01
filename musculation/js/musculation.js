@@ -181,6 +181,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     function atualizarItens() {
+        console.log('grupoIndex', grupoIndex )
+        console.log('exercicioIndex', exercicioIndex )
+        console.log('grupos', grupos )
         let grupoAtual = grupos[grupoIndex];
         let exercicioAtual = listas[grupoAtual][exercicioIndex];
 
