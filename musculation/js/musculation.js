@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     function preencherSelect() {
         grupoSelect.innerHTML = "";
-        grupos.forEach((grupo, ) => {
+        grupos.forEach((grupo,i) => {
             let option = document.createElement("option");
             option.value = i;
             option.textContent = grupo;
