@@ -345,17 +345,26 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Define o grupo com base no dia da semana
     function definirGrupoPorDia() {
-        // Obtém o nome do dia da semana em português
-        const dayOfWeek = today.toLocaleDateString('pt-BR', {
-            weekday: 'long', // 'long' para nome completo (ex.: "segunda-feira"), 'short' para abreviado (ex.: "seg.")
-        });
-        console.log('Dia da semana:', formattedDate, dayOfWeek);
+        // Mapeia nomes de dias do toLocaleDateString para o formato do modelo Treino2
 
+        const dayMap = {
+            'segunda-feira': 'segunda',
+            'terça-feira': 'terça',
+            'quarta-feira': 'quarta',
+            'quinta-feira': 'quinta',
+            'sexta-feira': 'sexta',
+            'sábado': 'sábado',
+            'domingo': 'domingo',
+        };
+
+        // Obtém o nome do dia da semana no formato do modelo Treino2
+        const currentDayOfWeek = dayMap[today.toLocaleDateString('pt-BR', { weekday: 'long' })] || 'segunda';
+        console.log(`Dia da semana atual: ${currentDayOfWeek}`);
         // Define o valor do grupoSelect
-        grupoSelect.value = dayOfWeek;
+        grupoSelect.value = currentDayOfWeek;
         // console.log(`Grupo selecionado para o dia ${diaSemana}: ${grupos[grupoIndex]}`);
-    }
 
+    }
 
     carregarProgresso(); // 🚀 Restaurando progresso salvo
     preencherSelect(); // 🚀 Agora os grupos aparecem no select
