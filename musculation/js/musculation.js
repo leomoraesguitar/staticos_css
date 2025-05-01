@@ -341,6 +341,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     grupoSelect.addEventListener("change", (event) => {
         grupoIndex = parseInt(event.target.value);
+        console.log('grupoIndex',grupoIndex)
         exercicioIndex = 0;
         atualizarItens();
     });
