@@ -99,9 +99,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     function preencherSelect() {
         grupoSelect.innerHTML = "";
-        grupos.forEach((grupo, i) => {
+        grupos.forEach((grupo) => {
             let option = document.createElement("option");
-            option.value = i;
+            option.value = grupo;
             option.textContent = grupo;
             grupoSelect.appendChild(option);
         });
@@ -345,16 +345,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Define o grupo com base no dia da semana
     function definirGrupoPorDia() {
-        // Obtém o dia da semana (0 = domingo, 1 = segunda, ..., 6 = sábado)
-        const diaSemana = today.getDay();
-        console.log('Dia da semana:', formattedDate);
-        // Mapeia o dia da semana para o índice do array grupos
-        // Assumindo grupos = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"]
-        grupoIndex = (diaSemana - 1) % grupos.length; // Segunda = 0, Terça = 1, ..., Domingo = 6
-        if (grupoIndex < 0) grupoIndex = grupos.length - 1; // Domingo (0) = último grupo (Domingo)
+        // Obtém o nome do dia da semana em português
+        const dayOfWeek = today.toLocaleDateString('pt-BR', {
+            weekday: 'long', // 'long' para nome completo (ex.: "segunda-feira"), 'short' para abreviado (ex.: "seg.")
+        });
+        console.log('Dia da semana:', formattedDate, dayOfWeek);
 
         // Define o valor do grupoSelect
-        grupoSelect.value = grupoIndex;
+        grupoSelect.value = dayOfWeek;
         // console.log(`Grupo selecionado para o dia ${diaSemana}: ${grupos[grupoIndex]}`);
     }
 
