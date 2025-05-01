@@ -82,13 +82,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // Restante do código
-    // Lista de dias na ordem correta
-    const diasOrdem = ['segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado', 'domingo'];
-
-    // Obtém as chaves de listasData e ordena conforme diasOrdem
-    let grupos = Object.keys(listasData).sort((a, b) => {
-        return diasOrdem.indexOf(a) - diasOrdem.indexOf(b);
-    });
+    let grupos = Object.keys(listasData);
     let listas = listasData;
 
     // console.log("Grupos carregados:", grupos);
