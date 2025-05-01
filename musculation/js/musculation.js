@@ -8,7 +8,7 @@ async function requisitarDados() {
     const dadosExistentes = localStorage.getItem(chaveLocalStorage);
 
     if (dadosExistentes) {
-        console.log("Os dados já estão no Local Storage:", JSON.parse(dadosExistentes));
+        console.log("Os dados já estão no Local Storage:"); //
         return JSON.parse(dadosExistentes); // Retorna os dados armazenados
     } else {
         console.log("Dados não encontrados no Local Storage. Requisitando...");
@@ -16,7 +16,7 @@ async function requisitarDados() {
         try {
             // Faz a requisição ao endpoint de dados
             const resposta = await fetch(urlEndpoint);
-            console.log("Resposta do servidor:", resposta);
+            // console.log("Resposta do servidor:", resposta);
 
             if (!resposta.ok) {
                 throw new Error(`Erro na requisição: ${resposta.statusText}`);
@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (grupos.length === 0) {
             console.error("Erro: Nenhum grupo encontrado.");
         } else {
-            console.log("Grupos carregados:", grupos);
+            console.log("Grupos carregados:");
         }
     }
 
@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
             const resultado = await resposta.json();
-            console.log("Dados enviados com sucesso:", resultado);
+            console.log("Dados enviados com sucesso:");
             return resultado;
         } catch (erro) {
             console.error("Erro ao enviar dados para o Django:", erro);
@@ -193,7 +193,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         pesoInicialInput.textContent = exercicioAtual[1];
         pesoFinalInput.value = exercicioAtual[2];
         pesoFinalInput.textContent = exercicioAtual[2];
-        console.log(exercicioAtual[1], exercicioAtual[2])
+        // console.log(exercicioAtual[1], exercicioAtual[2])
         calcularTotalRepeticoes();
 
         let repeticoesContainer = document.getElementById("repeticoes");
@@ -347,6 +347,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     function definirGrupoPorDia() {
         // Obtém o dia da semana (0 = domingo, 1 = segunda, ..., 6 = sábado)
         const diaSemana = today.getDay();
+        console.log('Dia da semana:', formattedDate);
         // Mapeia o dia da semana para o índice do array grupos
         // Assumindo grupos = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"]
         grupoIndex = (diaSemana - 1) % grupos.length; // Segunda = 0, Terça = 1, ..., Domingo = 6
@@ -354,7 +355,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Define o valor do grupoSelect
         grupoSelect.value = grupoIndex;
-        console.log(`Grupo selecionado para o dia ${diaSemana}: ${grupos[grupoIndex]}`);
+        // console.log(`Grupo selecionado para o dia ${diaSemana}: ${grupos[grupoIndex]}`);
     }
 
 
