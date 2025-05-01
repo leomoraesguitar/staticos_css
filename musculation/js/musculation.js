@@ -341,9 +341,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     grupoSelect.addEventListener("change", (event) => {
         grupoIndex = parseInt(event.target.value);
-        console.log('event.target.value',event.target.value)
+        const idday = {
+            'segunda-feira': 0,
+            'terça-terça': 1,
+            'quarta-quarta': 2,
+            'quinta-quinta': 3,
+            'sexta-sexta': 4,
+            'sábado': 5,
+            'domingo': 7,
+        };
+        grupoIndex = idday[event.target.value];
+        console.log('grupoIndex',grupoIndex)
         exercicioIndex = 0;
-        // atualizarItens();
+        atualizarItens();
     });
 
 
@@ -373,7 +383,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     carregarProgresso(); // 🚀 Restaurando progresso salvo
     preencherSelect(); // 🚀 Agora os grupos aparecem no select
     definirGrupoPorDia(); // Define o grupo com base no dia
-    // atualizarItens(); // Inicializando corretamente
+    atualizarItens(); // Inicializando corretamente
 
 
     document.getElementById("limparProgresso").addEventListener("click", () => {
