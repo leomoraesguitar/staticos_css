@@ -1,4 +1,5 @@
 
+
 async function requisitarDados() {
     const chaveLocalStorage = "listas";
     // const urlEndpoint = "{% url 'obterdados' %}"; // Certifique-se de usar a URL correta
@@ -362,16 +363,34 @@ document.addEventListener("DOMContentLoaded", async () => {
         btnenviarComentario.addEventListener("click", (event) => {
             // console.log('comentario', comentario.value)
             // console.log('comentario_orig', listas[grupoAtual][exercicioIndex][exercicioAtual.length - 1])
+            console.log(listas[grupoAtual][exercicioIndex]);
 
-            listas[grupoAtual][exercicioIndex].push(comentario.value);
+            if (
+                  listas[grupoAtual] && 
+                  Array.isArray(listas[grupoAtual][exercicioIndex]) && 
+                  listas[grupoAtual][exercicioIndex].length > 0
+              ) {
+                  let ultimoElemento = listas[grupoAtual][exercicioIndex][listas[grupoAtual][exercicioIndex].length - 1];
+                  if (typeof ultimoElemento === 'string') {
+                      console.log("O último elemento é uma string:", ultimoElemento);
+                      listas[grupoAtual][exercicioIndex][listas[grupoAtual][exercicioIndex].length - 1] = comentario.value
+
+                  } else {
+                      console.log("O último elemento NÃO é uma string:", ultimoElemento);
+                      listas[grupo][exercicioIndex].push(comentario.value);
+                  }
+              } else {
+                  console.error("Array inválido ou vazio");
+              }
+            // listas[grupo][exercicioIndex].push(comentario.value);
             // Atualiza o localStorage
             localStorage.setItem("listas", JSON.stringify(listas));
-
             enviarComentario(
                 grupoAtual,
                 exercicioAtual[0],
             );
-            // atualizarItens();
+            atualizarItens();
+            console.log(listas[grupoAtual][exercicioIndex]);
 
         });        
     
