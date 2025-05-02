@@ -325,7 +325,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             //         alert("Erro ao atualizar o peso inicial. Tente novamente.");
             //     }
             // });
-            atualizarItens();
+           
 
         });
 
@@ -370,7 +370,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             enviarComentario(
                 grupoAtual,
                 exercicioAtual[0],
-            )
+            );
+            atualizarItens();
 
         });        
     
