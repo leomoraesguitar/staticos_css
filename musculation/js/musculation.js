@@ -83,9 +83,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Restante do código
     let grupos = Object.keys(listasData);
+
     let listas = listasData;
 
-    // console.log("Grupos carregados:", grupos);
+    console.log("Grupos carregados:", grupos);
     let grupoSelect = document.getElementById("grupoSelect");
     let grupoIndex = 0;
     let exercicioIndex = 0;
@@ -148,7 +149,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Função para enviar o formulário ao Django
     async function enviarFormulario(grupo, exercicio, pesoInicial, pesoFinal) {
         const formulario = document.querySelector('form[method="POST"]');
-        // const updateEndpoint = "{% url 'atualizar_pesos' %}"; // Substitua pela URL correta
         if (!updateEndpoint) {
             console.error("updateEndpoint não está definido. Verifique o <script> no HTML.");
             return { status: 'error', message: 'Endpoint não configurado' };
@@ -356,7 +356,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             'segunda-feira': 0,
             'terça-feira': 1,
             'quarta-feira': 2,
-            'quinta-feira': 2,
+            'quinta-feira': 3,
             'sexta-feira': 4,
             'sábado': 5,
             'domingo': 6,
