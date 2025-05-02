@@ -368,10 +368,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             // Atualiza o localStorage
             localStorage.setItem("listas", JSON.stringify(listas));
 
-            enviarComentario(
-                grupoAtual,
-                exercicioAtual[0],
-            )
+            // enviarComentario(
+            //     grupoAtual,
+            //     exercicioAtual[0],
+            // )
             // .then(resultado => {
             //     if (resultado && resultado.status === 'success') {
             //         alert("Peso inicial atualizado com sucesso!");
