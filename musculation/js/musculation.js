@@ -193,8 +193,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         // console.log('grupos', grupos )
         let grupoAtual = grupos[grupoIndex];
         let exercicioAtual = listas[grupoAtual][exercicioIndex];
-        dia_comentario.value = grupoAtual
-        exercicio_comentario.value = exercicioAtual
+        dia_comentario.value = grupoAtual || "";
+        exercicio_comentario.value = exercicioAtual || "";
         // Adiciona event listeners para pesoInicial e pesoFinal
         const pesoInicialInput = document.getElementById("pesoInicial");
         const pesoFinalInput = document.getElementById("pesoFinal");
