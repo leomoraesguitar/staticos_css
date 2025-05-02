@@ -180,7 +180,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     async function enviarComentario(grupo, exercicio) {
-        const formulario = document.querySelector('form[method="POST"]');
+        const formulario = document.getElementById('formComentario');
         if (!updateComentario) {
             console.error("updateComentario não está definido. Verifique o <script> no HTML.");
             return { status: 'error', message: 'Endpoint não configurado' };
