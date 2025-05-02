@@ -177,6 +177,41 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.log("Comentário no bd:", exercicioAtual[exercicioAtual.length - 1]);
     }
 
+
+    async function enviarComentario(grupo, exercicio) {
+        const formulario = document.querySelector('form[method="POST"]');
+        if (!updateComentario) {
+            console.error("updateComentario não está definido. Verifique o <script> no HTML.");
+            return { status: 'error', message: 'Endpoint não configurado' };
+        }
+        // Cria um FormData com os dados
+        const formData = new FormData(formulario);
+        formData.append('grupo', grupo);
+        formData.append('exercicio', exercicio);
+
+
+
+        try {
+            const resposta = await fetch(updateComentario, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!resposta.ok) {
+                throw new Error(`Erro na requisição: ${resposta.statusText}`);
+            }
+
+            const resultado = await resposta.json();
+            console.log("Dados enviados com sucesso:");
+            return resultado;
+        } catch (erro) {
+            console.error("Erro ao enviar dados para o Django:", erro);
+            return { status: 'error', message: erro.message };
+        }
+    }
+
+
+
     // Função para enviar o formulário ao Django
     async function enviarFormulario(grupo, exercicio, pesoInicial, pesoFinal) {
         const formulario = document.querySelector('form[method="POST"]');
