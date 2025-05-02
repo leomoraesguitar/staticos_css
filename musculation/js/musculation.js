@@ -353,13 +353,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Mapeia nomes de dias do toLocaleDateString para o formato do modelo Treino2
 
         const dayMap = {
-            'segunda-feira': 1,
-            'terça-feira': 2,
-            'quarta-feira': 3,
-            'quinta-feira': 4,
-            'sexta-feira': 5,
-            'sábado': 6,
-            'domingo': 7,
+            'segunda-feira': 0,
+            'terça-feira': 1,
+            'quarta-feira': 2,
+            'quinta-feira': 2,
+            'sexta-feira': 4,
+            'sábado': 5,
+            'domingo': 6,
         };
 
         // Obtém o nome do dia da semana no formato do modelo Treino2
