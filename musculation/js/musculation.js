@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     let dia_comentario = document.getElementById("dia_comentario");
     let exercicio_comentario = document.getElementById("exercicio_comentario");
-
+    let comentario = document.getElementById("comentario");
 
 
 
@@ -197,16 +197,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         //set os valores das variaves que serão enviadas para savalr os comentarios
         console.log('grupoAtual', grupoAtual)
         console.log('exercicioAtual', exercicioAtual)
-        // if (grupoAtual && exercicioAtual) {
-        //     dia_comentario.value = grupoAtual[grupoIndex];
-        //     exercicio_comentario.value = exercicioAtual[exercicioIndex];
-        // }
+        if (grupoAtual != null && exercicioAtual != null) {
+            dia_comentario.value = grupoAtual
+            exercicio_comentario.value = exercicioAtual[0];
+        }
 
         // Adiciona event listeners para pesoInicial e pesoFinal
         const pesoInicialInput = document.getElementById("pesoInicial");
         const pesoFinalInput = document.getElementById("pesoFinal");
         
         document.getElementById("exercicio").textContent = exercicioAtual[0];
+        console.log('exercicioAtual_último', exercicioAtual[-1])
+        comentario.textContent = exercicioAtual[exercicioAtual.length - 1];
+        comentario.value = exercicioAtual[exercicioAtual.length - 1];
         pesoInicialInput.value = exercicioAtual[1];
         pesoInicialInput.textContent = exercicioAtual[1];
         pesoFinalInput.value = exercicioAtual[2];
@@ -217,7 +220,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         let repeticoesContainer = document.getElementById("repeticoes");
         repeticoesContainer.innerHTML = "";
 
-        exercicioAtual.slice(3).forEach(rep => {
+        exercicioAtual.slice(3, -1).forEach(rep => {
             let button = document.createElement("button");
             button.className = "btn btn-outline-light border-2 fw-bold btn-lg mx-1 repeticao-btn";
             button.textContent = rep;
@@ -425,5 +428,4 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 });
-
 
