@@ -102,6 +102,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     let exercicio_comentario = document.getElementById("exercicio_comentario");
     let comentario = document.getElementById("comentario");
 
+    let btnenviarComentario = document.getElementById("btnenviarComentario");
 
 
 
@@ -355,32 +356,29 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
 
-        // comentario.addEventListener("change", (event) => {
-        //     const novoComentario = event.target.value;
-        //     if (isNaN(novoComentario)) {
+        btnenviarComentario.addEventListener("click", (event) => {
+            console.log('comentario', comentario.value)
+            if (isNaN(comentario.value) || ) {
                                
-        //         return;
-        //     }
-        //     // Atualiza o valor no listas
-        //     listas[grupoAtual][exercicioIndex][1] = novoPesoInicial;
-        //     // Atualiza o localStorage
-        //     localStorage.setItem("listas", JSON.stringify(listas));
-        //     // Envia o formulário para o Django
+                return;
+            }
 
-        //     enviarFormulario(
-        //         grupoAtual,
-        //         exercicioAtual[0],
-        //         novoPesoInicial,
-        //         parseInt(pesoFinalInput.value) || 0,
-        //     )
-        //     // .then(resultado => {
-        //     //     if (resultado && resultado.status === 'success') {
-        //     //         alert("Peso inicial atualizado com sucesso!");
-        //     //     } else {
-        //     //         alert("Erro ao atualizar o peso inicial. Tente novamente.");
-        //     //     }
-        //     // });
-        // });        
+            listas[grupoAtual][exercicioIndex][exercicioAtual.length - 1] = comentario.value;
+            // Atualiza o localStorage
+            localStorage.setItem("listas", JSON.stringify(listas));
+
+            enviarComentario(
+                grupoAtual,
+                exercicioAtual[0],
+            )
+            // .then(resultado => {
+            //     if (resultado && resultado.status === 'success') {
+            //         alert("Peso inicial atualizado com sucesso!");
+            //     } else {
+            //         alert("Erro ao atualizar o peso inicial. Tente novamente.");
+            //     }
+            // });
+        });        
     
 
 
