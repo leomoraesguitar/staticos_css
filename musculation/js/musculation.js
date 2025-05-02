@@ -358,7 +358,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         btnenviarComentario.addEventListener("click", (event) => {
             console.log('comentario', comentario.value)
-            if (isNaN(comentario.value) || ) {
+            if (isNaN(comentario.value)) {
                                
                 return;
             }
