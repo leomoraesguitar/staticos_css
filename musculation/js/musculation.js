@@ -358,6 +358,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         btnenviarComentario.addEventListener("click", (event) => {
             console.log('comentario', comentario.value)
+            console.log('comentario_orig', listas[grupoAtual][exercicioIndex][exercicioAtual.length - 1])
             if (isNaN(comentario.value)) {
                                
                 return;
