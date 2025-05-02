@@ -1,5 +1,4 @@
 
-
 async function requisitarDados() {
     const chaveLocalStorage = "listas";
     // const urlEndpoint = "{% url 'obterdados' %}"; // Certifique-se de usar a URL correta
@@ -180,7 +179,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     async function enviarComentario(grupo, exercicio) {
+      // console.log('comentario', comentario.value)
         const formulario = document.getElementById('formComentario');
+
         if (!updateComentario) {
             console.error("updateComentario não está definido. Verifique o <script> no HTML.");
             return { status: 'error', message: 'Endpoint não configurado' };
@@ -359,10 +360,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         btnenviarComentario.addEventListener("click", (event) => {
             // console.log('comentario', comentario.value)
             // console.log('comentario_orig', listas[grupoAtual][exercicioIndex][exercicioAtual.length - 1])
-            if (isNaN(comentario.value)) {
-                               
-                return;
-            }
 
             listas[grupoAtual][exercicioIndex][exercicioAtual.length - 1] = comentario.value;
             // Atualiza o localStorage
@@ -508,3 +505,4 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 });
+
