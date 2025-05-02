@@ -168,8 +168,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     
         // Atualizar o último elemento de exercicioAtual com o valor do comentário
-        exercicioAtual[exercicioAtual.length - 1] = comentario.value;
-    
+
+        listas[grupoAtual][exercicioIndex][exercicioAtual.length - 1] = comentario.value;
+        // Atualiza o localStorage
+        localStorage.setItem("listas", JSON.stringify(listas));
         // Exibir os logs
         console.log("Comentário enviado:", comentario.value);
         console.log("Comentário no bd:", exercicioAtual[exercicioAtual.length - 1]);
