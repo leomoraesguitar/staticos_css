@@ -363,7 +363,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             // console.log('comentario', comentario.value)
             // console.log('comentario_orig', listas[grupoAtual][exercicioIndex][exercicioAtual.length - 1])
 
-            listas[grupoAtual][exercicioIndex][exercicioAtual.length - 1] = comentario.value;
+            listas[grupoAtual][exercicioIndex].push(comentario.value);
             // Atualiza o localStorage
             localStorage.setItem("listas", JSON.stringify(listas));
 
