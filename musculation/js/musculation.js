@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     let listas = listasData;
 
-    console.log("Grupos carregados:", grupos);
+    // console.log("Grupos carregados:", grupos);
     let grupoSelect = document.getElementById("grupoSelect");
     let grupoIndex = 0;
     let exercicioIndex = 0;
@@ -195,8 +195,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         let exercicioAtual = listas[grupoAtual][exercicioIndex];
 
         //set os valores das variaves que serão enviadas para savalr os comentarios
-        console.log('grupoAtual', grupoAtual)
-        console.log('exercicioAtual', exercicioAtual)
+        // console.log('grupoAtual', grupoAtual)
+        // console.log('exercicioAtual', exercicioAtual)
         if (grupoAtual != null && exercicioAtual != null) {
             dia_comentario.value = grupoAtual
             exercicio_comentario.value = exercicioAtual[0];
@@ -428,4 +428,3 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 });
-
