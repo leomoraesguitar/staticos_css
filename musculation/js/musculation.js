@@ -153,12 +153,27 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
 
-    async function enviouComentario() {
-        exercicioAtual[exercicioAtual.length - 1] = comentario.value;
-        console.log("Comentário enviado:", comentario.value);
-        console.log("comentario no bd", exercicioAtual[exercicioAtual.length - 1]);
+    function enviouComentario() {
+        // Obter o elemento do comentário do DOM
 
-    };
+        if (!comentario) {
+            console.error("Elemento de comentário não encontrado.");
+            return;
+        }
+    
+        // Supondo que exercicioAtual seja um array global ou definido em outro lugar
+        if (!exercicioAtual || !Array.isArray(exercicioAtual)) {
+            console.error("exercicioAtual não é um array válido.");
+            return;
+        }
+    
+        // Atualizar o último elemento de exercicioAtual com o valor do comentário
+        exercicioAtual[exercicioAtual.length - 1] = comentario.value;
+    
+        // Exibir os logs
+        console.log("Comentário enviado:", comentario.value);
+        console.log("Comentário no bd:", exercicioAtual[exercicioAtual.length - 1]);
+    }
 
     // Função para enviar o formulário ao Django
     async function enviarFormulario(grupo, exercicio, pesoInicial, pesoFinal) {
