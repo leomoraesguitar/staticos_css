@@ -357,8 +357,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
         btnenviarComentario.addEventListener("click", (event) => {
-            console.log('comentario', comentario.value)
-            console.log('comentario_orig', listas[grupoAtual][exercicioIndex][exercicioAtual.length - 1])
+            // console.log('comentario', comentario.value)
+            // console.log('comentario_orig', listas[grupoAtual][exercicioIndex][exercicioAtual.length - 1])
             if (isNaN(comentario.value)) {
                                
                 return;
@@ -372,13 +372,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 grupoAtual,
                 exercicioAtual[0],
             )
-            // .then(resultado => {
-            //     if (resultado && resultado.status === 'success') {
-            //         alert("Peso inicial atualizado com sucesso!");
-            //     } else {
-            //         alert("Erro ao atualizar o peso inicial. Tente novamente.");
-            //     }
-            // });
+
         });        
     
 
