@@ -195,10 +195,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         let exercicioAtual = listas[grupoAtual][exercicioIndex];
 
         //set os valores das variaves que serão enviadas para savalr os comentarios
-        if (grupoAtual && exercicioAtual) {
-            dia_comentario.value = grupoAtual[grupoIndex];
-            exercicio_comentario.value = exercicioAtual[exercicioIndex];
-        }
+        console.log('grupoAtual', grupoAtual)
+        console.log('exercicioAtual', exercicioAtual)
+        // if (grupoAtual && exercicioAtual) {
+        //     dia_comentario.value = grupoAtual[grupoIndex];
+        //     exercicio_comentario.value = exercicioAtual[exercicioIndex];
+        // }
 
         // Adiciona event listeners para pesoInicial e pesoFinal
         const pesoInicialInput = document.getElementById("pesoInicial");
