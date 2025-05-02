@@ -371,7 +371,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 grupoAtual,
                 exercicioAtual[0],
             );
-            atualizarItens();
+            // atualizarItens();
 
         });        
     
