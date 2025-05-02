@@ -325,6 +325,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             //         alert("Erro ao atualizar o peso inicial. Tente novamente.");
             //     }
             // });
+            atualizarItens();
+
         });
 
         pesoFinalInput.addEventListener("change", (event) => {
