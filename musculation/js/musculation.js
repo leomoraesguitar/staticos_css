@@ -1,49 +1,4 @@
 
-
-async function requisitarDados() {
-    const chaveLocalStorage = "listas";
-    // const urlEndpoint = "{% url 'obterdados' %}"; // Certifique-se de usar a URL correta
-
-    // Verifica se os dados já estão no Local Storage
-    const dadosExistentes = localStorage.getItem(chaveLocalStorage);
-
-    if (dadosExistentes) {
-        console.log("Os dados já estão no Local Storage:"); //
-        return JSON.parse(dadosExistentes); // Retorna os dados armazenados
-    } else {
-        console.log("Dados não encontrados no Local Storage. Requisitando...");
-
-        try {
-            // Faz a requisição ao endpoint de dados
-            const resposta = await fetch(urlEndpoint);
-            // console.log("Resposta do servidor:", resposta);
-
-            if (!resposta.ok) {
-                throw new Error(`Erro na requisição: ${resposta.statusText}`);
-            }
-
-            const dados = await resposta.json(); // Obtém os dados como JSON
-            // console.log("Dados recebidos:", dados);
-
-            // Armazena os dados no Local Storage
-            localStorage.setItem(chaveLocalStorage, JSON.stringify(dados));
-            console.log("Dados armazenados no Local Storage com sucesso!");
-
-            return dados; // Retorna os dados requisitados
-        } catch (erro) {
-            console.error("Erro ao requisitar os dados:", erro);
-            return null;
-        }
-    }
-}
-
-
-document.addEventListener("DOMContentLoaded", () => {
-  requisitarDados();
-});
-
-
-
 document.addEventListener("DOMContentLoaded", async () => {
     // Declaração da variável today
     const today = new Date();
@@ -63,19 +18,20 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (!listasData) {
         console.log("Dados não encontrados no Local Storage. Requisitando do servidor...");
-        try {
-            const resposta = await fetch(urlEndpoint);
-            // console.log("Resposta do servidor:", resposta);
-            if (!resposta.ok) {
-                throw new Error(`Erro ao requisitar os dados: ${resposta.statusText}`);
-            }
-            listasData = await resposta.json();
-            // console.log("JSON recebido do servidor:", listasData);
-            localStorage.setItem("listas", JSON.stringify(listasData));
-        } catch (error) {
-            console.error("Erro ao requisitar os dados:", error);
-            return;
-        }
+        // try {
+        //     const resposta = await fetch(urlEndpoint);
+        //     // console.log("Resposta do servidor:", resposta);
+        //     if (!resposta.ok) {
+        //         throw new Error(`Erro ao requisitar os dados: ${resposta.statusText}`);
+        //     }
+        //     listasData = await resposta.json();
+        //     // console.log("JSON recebido do servidor:", listasData);
+        //     localStorage.setItem("listas", JSON.stringify(listasData));
+        // } catch (error) {
+        //     console.error("Erro ao requisitar os dados:", error);
+        //     return;
+        // }
+        requisitarDados();
     } else {
         console.log("Carregando dados do Local Storage...");
         listasData = JSON.parse(listasData);
@@ -104,7 +60,35 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     let btnenviarComentario = document.getElementById("btnenviarComentario");
 
+    let pesoInicialInput = document.getElementById("pesoInicial");
+    let pesoFinalInput = document.getElementById("pesoFinal");
 
+
+    async function requisitarDados() {
+        try {
+              const resposta = await fetch(urlEndpoint);
+              // console.log("Resposta do servidor:", resposta);
+              if (!resposta.ok) {
+                  throw new Error(`Erro ao requisitar os dados: ${resposta.statusText}`);
+              }
+              listasData = await resposta.json();
+              console.log("JSON recebido do servidor:", listasData);
+              localStorage.setItem("listas", JSON.stringify(listasData));
+              alert("✅ Dados atualizados!");
+              window.location.assign(window.location.href);
+
+          } catch (error) {
+              console.error("Erro ao requisitar os dados:", error);
+              return;
+          }
+    }
+
+    async function atualizar_do_bd() {
+      requisitarDados();
+      grupos = Object.keys(listasData);
+      atualizarItens();
+
+    }
 
     function preencherSelect() {
         grupoSelect.innerHTML = "";
@@ -153,7 +137,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         totalRepeticoesEl.textContent = totalRepeticoes;
     }
 
-
     function enviouComentario() {
         // Obter o elemento do comentário do DOM
 
@@ -178,7 +161,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.log("Comentário no bd:", exercicioAtual[exercicioAtual.length - 1]);
     }
 
-
     async function enviarComentario(grupo, exercicio) {
       // console.log('comentario', comentario.value)
         const formulario = document.getElementById('formComentario');
@@ -189,10 +171,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         // Cria um FormData com os dados
         const formData = new FormData(formulario);
-        formData.append('grupo', grupo);
-        formData.append('exercicio', exercicio);
+        // formData.append('grupo', grupo);
+        // formData.append('exercicio', exercicio);
+        formData.append('dia_comentario', grupo);
+        formData.append('exercicio_comentario', exercicio);
 
-
+        
+        
 
         try {
             const resposta = await fetch(updateComentario, {
@@ -212,8 +197,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             return { status: 'error', message: erro.message };
         }
     }
-
-
 
     // Função para enviar o formulário ao Django
     async function enviarFormulario(grupo, exercicio, pesoInicial, pesoFinal) {
@@ -265,8 +248,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         // Adiciona event listeners para pesoInicial e pesoFinal
-        const pesoInicialInput = document.getElementById("pesoInicial");
-        const pesoFinalInput = document.getElementById("pesoFinal");
+
         
         document.getElementById("exercicio").textContent = exercicioAtual[0];
         // console.log('exercicioAtual_último', exercicioAtual[-1])
@@ -291,109 +273,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
 
-
-
-
-
-
         restaurarRepeticoesMarcadas(grupoAtual, exercicioAtual[0]);
         atualizarBarraProgresso();
 
-
-        pesoInicialInput.addEventListener("change", (event) => {
-            const novoPesoInicial = parseInt(event.target.value);
-            if (isNaN(novoPesoInicial) || novoPesoInicial < 0) {
-                alert("Por favor, insira um peso inicial válido (número inteiro positivo).");
-                event.target.value = exercicioAtual[1]; // Restaura o valor anterior
-                return;
-            }
-            // Atualiza o valor no listas
-            listas[grupoAtual][exercicioIndex][1] = novoPesoInicial;
-            // Atualiza o localStorage
-            localStorage.setItem("listas", JSON.stringify(listas));
-            // Envia o formulário para o Django
-
-            enviarFormulario(
-                grupoAtual,
-                exercicioAtual[0],
-                novoPesoInicial,
-                parseInt(pesoFinalInput.value) || 0,
-            )
-            // .then(resultado => {
-            //     if (resultado && resultado.status === 'success') {
-            //         alert("Peso inicial atualizado com sucesso!");
-            //     } else {
-            //         alert("Erro ao atualizar o peso inicial. Tente novamente.");
-            //     }
-            // });
-           
-
-        });
-
-        pesoFinalInput.addEventListener("change", (event) => {
-            const novoPesoFinal = parseInt(event.target.value);
-            if (isNaN(novoPesoFinal) || novoPesoFinal < 0) {
-                alert("Por favor, insira um peso final válido (número inteiro positivo).");
-                event.target.value = exercicioAtual[2]; // Restaura o valor anterior
-                return;
-            }
-            // Atualiza o valor no listas
-            listas[grupoAtual][exercicioIndex][2] = novoPesoFinal;
-            // Atualiza o localStorage
-            localStorage.setItem("listas", JSON.stringify(listas));
-            // Envia o formulário para o Django
-
-            enviarFormulario(
-                grupoAtual,
-                exercicioAtual[0],
-                parseInt(pesoInicialInput.value) || 0,
-                novoPesoFinal,
-
-            )
-            // .then(resultado => {
-            //     if (resultado && resultado.status === 'success') {
-            //         alert("Peso final atualizado com sucesso!");
-            //     } else {
-            //         alert("Erro ao atualizar o peso final. Tente novamente.");
-            //     }
-            // });
-        });
-
-
-        btnenviarComentario.addEventListener("click", (event) => {
-            // console.log('comentario', comentario.value)
-            // console.log('comentario_orig', listas[grupoAtual][exercicioIndex][exercicioAtual.length - 1])
-            console.log(listas[grupoAtual][exercicioIndex]);
-
-            if (
-                  listas[grupoAtual] && 
-                  Array.isArray(listas[grupoAtual][exercicioIndex]) && 
-                  listas[grupoAtual][exercicioIndex].length > 0
-              ) {
-                  let ultimoElemento = listas[grupoAtual][exercicioIndex][listas[grupoAtual][exercicioIndex].length - 1];
-                  if (typeof ultimoElemento === 'string') {
-                      console.log("O último elemento é uma string:", ultimoElemento);
-                      listas[grupoAtual][exercicioIndex][listas[grupoAtual][exercicioIndex].length - 1] = comentario.value
-
-                  } else {
-                      console.log("O último elemento NÃO é uma string:", ultimoElemento);
-                      listas[grupo][exercicioIndex].push(comentario.value);
-                  }
-              } else {
-                  console.error("Array inválido ou vazio");
-              }
-            // listas[grupo][exercicioIndex].push(comentario.value);
-            // Atualiza o localStorage
-            localStorage.setItem("listas", JSON.stringify(listas));
-            enviarComentario(
-                grupoAtual,
-                exercicioAtual[0],
-            );
-            atualizarItens();
-            console.log(listas[grupoAtual][exercicioIndex]);
-
-        });        
-    
 
 
     }
@@ -438,9 +320,41 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         });
     }
+    // Define o grupo com base no dia da semana
+    function definirGrupoPorDia() {
+        // Mapeia nomes de dias do toLocaleDateString para o formato do modelo Treino2
+
+        const dayMap = {
+            'segunda-feira': 0,
+            'terça-feira': 1,
+            'quarta-feira': 2,
+            'quinta-feira': 3,
+            'sexta-feira': 4,
+            'sábado': 5,
+            'domingo': 6,
+        };
+
+        // Obtém o nome do dia da semana no formato do modelo Treino2
+        const currentDayOfWeek = dayMap[today.toLocaleDateString('pt-BR', { weekday: 'long' })] || 'segunda';
+        console.log(`Dia da semana atual: ${currentDayOfWeek}`);
+        // Define o valor do grupoSelect
+        grupoSelect.value = currentDayOfWeek;
+        grupoIndex = currentDayOfWeek;
+
+        // console.log(`Grupo selecionado para o dia ${diaSemana}: ${grupos[grupoIndex]}`);
+
+    }
 
 
 
+
+    carregarProgresso(); // 🚀 Restaurando progresso salvo
+    preencherSelect(); // 🚀 Agora os grupos aparecem no select
+    definirGrupoPorDia(); // Define o grupo com base no dia
+    atualizarItens(); // Inicializando corretamente
+
+
+// =====================Listeners================================
 
     document.getElementById("next").addEventListener("click", () => {
         if (exercicioIndex < listas[grupos[grupoIndex]].length - 1) {
@@ -463,36 +377,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         exercicioIndex = 0;
         atualizarItens();
     });
-
-
-    // Define o grupo com base no dia da semana
-    function definirGrupoPorDia() {
-        // Mapeia nomes de dias do toLocaleDateString para o formato do modelo Treino2
-
-        const dayMap = {
-            'segunda-feira': 0,
-            'terça-feira': 1,
-            'quarta-feira': 2,
-            'quinta-feira': 3,
-            'sexta-feira': 4,
-            'sábado': 5,
-            'domingo': 6,
-        };
-
-        // Obtém o nome do dia da semana no formato do modelo Treino2
-        const currentDayOfWeek = dayMap[today.toLocaleDateString('pt-BR', { weekday: 'long' })] || 'segunda';
-        console.log(`Dia da semana atual: ${currentDayOfWeek}`);
-        // Define o valor do grupoSelect
-        grupoSelect.value = currentDayOfWeek;
-        // console.log(`Grupo selecionado para o dia ${diaSemana}: ${grupos[grupoIndex]}`);
-
-    }
-
-    carregarProgresso(); // 🚀 Restaurando progresso salvo
-    preencherSelect(); // 🚀 Agora os grupos aparecem no select
-    definirGrupoPorDia(); // Define o grupo com base no dia
-    atualizarItens(); // Inicializando corretamente
-
 
     document.getElementById("limparProgresso").addEventListener("click", () => {
         // Removendo dados do localStorage
@@ -524,7 +408,113 @@ document.addEventListener("DOMContentLoaded", async () => {
         alert("✅ Progresso e repetições apagadas com sucesso!");
     });
 
+    document.getElementById("atualizar_bd").addEventListener("click", () => {
+      requisitarDados();
+      grupos = Object.keys(listasData);
+      atualizarItens();
+    });
+
+    pesoInicialInput.addEventListener("change", (event) => {
+        const novoPesoInicial = parseInt(event.target.value);
+        let grupoAtual = grupos[grupoIndex];
+        let exercicioAtual = listas[grupoAtual][exercicioIndex];
+        if (isNaN(novoPesoInicial) || novoPesoInicial < 0) {
+            alert("Por favor, insira um peso inicial válido (número inteiro positivo).");
+            event.target.value = exercicioAtual[1]; // Restaura o valor anterior
+            return;
+        }
+        // Atualiza o valor no listas
+        listas[grupoAtual][exercicioIndex][1] = novoPesoInicial;
+        // Atualiza o localStorage
+        localStorage.setItem("listas", JSON.stringify(listas));
+        // Envia o formulário para o Django
+
+        enviarFormulario(
+            grupoAtual,
+            exercicioAtual[0],
+            novoPesoInicial,
+            parseInt(pesoFinalInput.value) || 0,
+        )
+        // .then(resultado => {
+        //     if (resultado && resultado.status === 'success') {
+        //         alert("Peso inicial atualizado com sucesso!");
+        //     } else {
+        //         alert("Erro ao atualizar o peso inicial. Tente novamente.");
+        //     }
+        // });
+        
+
+    });
+
+    pesoFinalInput.addEventListener("change", (event) => {
+        const novoPesoFinal = parseInt(event.target.value);
+        let grupoAtual = grupos[grupoIndex];
+        let exercicioAtual = listas[grupoAtual][exercicioIndex];
+        if (isNaN(novoPesoFinal) || novoPesoFinal < 0) {
+            alert("Por favor, insira um peso final válido (número inteiro positivo).");
+            event.target.value = exercicioAtual[2]; // Restaura o valor anterior
+            return;
+        }
+        // Atualiza o valor no listas
+        listas[grupoAtual][exercicioIndex][2] = novoPesoFinal;
+        // Atualiza o localStorage
+        localStorage.setItem("listas", JSON.stringify(listas));
+        // Envia o formulário para o Django
+
+        enviarFormulario(
+            grupoAtual,
+            exercicioAtual[0],
+            parseInt(pesoInicialInput.value) || 0,
+            novoPesoFinal,
+
+        )
+        // .then(resultado => {
+        //     if (resultado && resultado.status === 'success') {
+        //         alert("Peso final atualizado com sucesso!");
+        //     } else {
+        //         alert("Erro ao atualizar o peso final. Tente novamente.");
+        //     }
+        // });
+    });
+
+    btnenviarComentario.addEventListener("click", (event) => {
+      // console.log('comentario', comentario.value)
+      // console.log('comentario_orig', listas[grupoAtual][exercicioIndex][exercicioAtual.length - 1])
+      // console.log(listas[grupoAtual][exercicioIndex]);
+      let grupoAtual = grupos[grupoIndex];
+      let exercicioAtual = listas[grupoAtual][exercicioIndex];
+      if (
+            listas[grupoAtual] && 
+            Array.isArray(listas[grupoAtual][exercicioIndex]) && 
+            listas[grupoAtual][exercicioIndex].length > 0
+        ) {
+            let ultimoElemento = listas[grupoAtual][exercicioIndex][listas[grupoAtual][exercicioIndex].length - 1];
+            if (typeof ultimoElemento === 'string') {
+                // console.log("O último elemento é uma string:", ultimoElemento);
+                listas[grupoAtual][exercicioIndex][listas[grupoAtual][exercicioIndex].length - 1] = comentario.value
+
+            } else {
+                // console.log("O último elemento NÃO é uma string:", ultimoElemento);
+                listas[grupo][exercicioIndex].push(comentario.value);
+            }
+        } else {
+            console.error("Array inválido ou vazio");
+        }
+      // listas[grupo][exercicioIndex].push(comentario.value);
+      // Atualiza o localStorage
+      localStorage.setItem("listas", JSON.stringify(listas));
+      // console.log( grupoAtual,exercicioAtual[0], 'ovo')
+      enviarComentario(
+          grupoAtual,
+          exercicioAtual[0],
+      );
+
+      // console.log(listas[grupoAtual][exercicioIndex]);
+
+  });        
+
+  
+  
 
 
 });
-
